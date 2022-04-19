@@ -1,0 +1,25 @@
+version: '3.5'
+services:
+  master:
+    image: ${CRIBL_IMAGE:-cribl/cribl:latest}
+    environment:
+      - CRIBL_DIST_MODE=master
+      - CRIBL_DIST_MASTER_URL=tcp://criblmaster@0.0.0.0:4200
+      - CRIBL_VOLUME_DIR=/opt/cribl/config-volume
+    ports:
+      - "19000:9000"
+    volumes:
+      - "/srv/cribl/config:/opt/cribl/config-volume"
+  workers:
+    image: ${CRIBL_IMAGE:-cribl/cribl:latest}
+    depends_on:
+      - master
+    environment:
+      - CRIBL_DIST_MODE=worker
+      - CRIBL_DIST_MASTER_URL=tcp://criblmaster@master:4200
+    ports:
+      - 9000
+      - "49154:9997"
+      - 1514
+      - "8088:8088"
+      - "8091:8091"
