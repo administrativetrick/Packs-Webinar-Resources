@@ -1,0 +1,17 @@
+version: "3.6"
+
+services:
+  so1:
+    image: ${SPLUNK_IMAGE:-splunk/splunk:latest}
+    container_name: splunk
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_LICENSE_URI=Free
+      - SPLUNK_ENABLE_LISTEN=9997
+      - SPLUNK_ADD=tcp 1514
+      - SPLUNK_PASSWORD=<Splunk_Password>
+    ports:
+      - 18000:8000
+      - 9997:9997
+      - 8089:8088
+      - 1514:1514
